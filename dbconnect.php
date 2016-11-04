@@ -38,5 +38,9 @@ public function item($sql)
 {
 	return $res=$this->con->query($sql);
 }
+public function store_list($sql)
+{
+	return $res=$this->con->query($sql);
+}
 	}
 ?>

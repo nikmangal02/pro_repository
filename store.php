@@ -2,45 +2,97 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+
 <title>Add Store</title>
 <style>
-.table {
-	margin-top: 300px;
+
+h3 {
+	padding-left:600px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:45px;
+	
 }
-h1 {
-	alignment-baseline: central;
+.button
+{
+	color:#000;
+	display:block;
+	position:relative;
+	text-align:center;
+    
+}
+	td
+		{
+			
+    
+    padding: 8px;
+	font-weight:bold;
+	font-size:16px;
+	font-family:Arial, Helvetica, sans-serif;
+		}
+.icon
+{
+	font-size:2.1em;
+	color:#FFF;
+}
+.navbar
+{
+	background-color:transparent;
+	border-color:transparent;
 }
 </style>
 </head>
 
 <body>
+<nav class="navbar navbar-inverse navbar">
+<div class="container-fluid">
+<ul class="nav navbar-nav">
+<li><a href="home.php"><span class="glyphicon glyphicon-home icon"></span></a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="store_list.php"><span class="btn btn-primary">Show List</a></span></li>
+
+</ul>
+</div>
+</nav>
+<div>
+
+<h3><strong>--Add Store--</strong></h3>
+<div class="col-md-8 col-xs-offset-2" >
 <form method="post" action="store.php">
 <table align="center" class="table" >
   <tr>
-    <td colspan="5" align="center"><strong>Store</strong></td>
-  </tr>
-  <tr>
     <td>Name:</td>
-    <td><input type="text" name="nme"</td>
+    <td><input type="text" name="nme" placeholder="Enter name"</td>
   </tr>
   <tr>
     <td>Address:</td>
-    <td><input type="text" name="addr"</td>
+    <td><input type="text" name="addr" placeholder="Address"</td>
+  </tr>
+  <tr>
+  <td>Landmark:</td>
+  <td><input type="text" name="landmark" placeholder="Landmark"</td>
   </tr>
   <tr>
     <td>pin code:</td>
-    <td><input type="number" name="pin"</td>
+    <td><input type="number" name="pin" placeholder="Pin code"</td>
   </tr>
   <tr>
-    <td align="center" colspan="5"><input type="submit" name="submit" align="center"</td>
+    <td align="center" colspan="5" ><input class="btn btn-primary" type="submit" name="submit" align="center" /></td>
   </tr>
   
   <tr>
-  <td><a href="home.php">Home</td>
-  <td align="right"><a href="item.php" name="item">Add item</td>
   </tr>
 </table>
 </form>
+</div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
 
@@ -50,9 +102,10 @@ if(isset($_POST['submit']))
 	$store_name=$_POST['nme'];
 	$store_addr=$_POST['addr'];
 	$store_pin=$_POST['pin'];
+	$store_landmark=$_POST['landmark'];
 	$len=strlen($store_pin);
 	
-	if($store_name=="" || $store_addr==""|| $store_pin=="")
+	if($store_name=="" || $store_addr==""|| $store_pin=="" || $store_landmark=="")
 	{
 		echo "<script>alert('All entries must be fill')</script>";	
 		exit();
@@ -77,9 +130,10 @@ if(isset($_POST['submit']))
 	  }
 	  else
 	  {
-		$sql="insert into store(name,address,pin_code) values ('$store_name','$store_addr','$store_pin')";
+		$sql="insert into store(name,address,landmark,pin_code) values ('$store_name','$store_addr','$store_landmark','$store_pin')";
 	  $db->stre($sql);
 	  echo "<script>alert('store added')</script>";  
+	  header("location:store_list.php");
 	  }  
 	
 }

@@ -2,7 +2,7 @@
 <?php
 include 'dbconnect.php';
 $db=new db();
-$ft="select id,name from store";
+$ft="select id,concat(name,',',landmark) as title from store";
 $result=$db->item($ft);
 
 
@@ -26,32 +26,73 @@ $result=$db->item($ft);
 	width:1200px;
 	height:650px;
 }
+
 .image_container
 {
-	background-image:url(item.jpg);
+	
 	background-repeat:no-repeat;
 	width:1375px;
     height:700px;
 	background-size:100%;
 	
 	}
+	table
+	{
+		margin-right:100px;
+		border-collapse:collapse;
+		border-color:#000;
+		font-family:Arial, Helvetica, sans-serif;
+		}
+		
+		td
+		{
+			
+    
+    padding: 8px;
+	font-weight:bold;
+	font-size:16px;
+	font-family:Arial, Helvetica, sans-serif;
+		}
+	.icon
+	{
+	font-size:2.2em;	
+	color:#FFF;
+	}
+	.navbar
+	{
+		border-color:transparent;
+		background-color:transparent;
+	}
+	h3
+	{
+		padding-left:600px;
+		font-family:"Times New Roman", Times, serif;
+		font-size:40px;
+	}
 </style>
 </head>
 
 <body>
-<div class="image_container img-responsive">
-<div class="container-fluid img">
+<nav class="navbar navbar-inverse navbar">
+<div class="container-fluid">
+<ul class="nav navbar-nav">
+<li><a href="home.php"><span class="glyphicon glyphicon-home icon"</span></a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="list.php"><span class="btn btn-primary">Show item</a></span></li>
+</ul>
+</div>
+</nav>
+
+<div>
+
+<h3><strong>--Add Item--</strong></h3>
+<div class="col-md-8 col-xs-offset-2">
 <form action="item.php" method="post">
-<table>
-<tr>
-<td colspan="5" align="center"><b>Select item</b></td>
-
-
-</tr>
-
+<table class="table">
 <tr>
 <td>Name of product:</td>
-<td><input type="text" name="naam"</td>
+<td><input type="text" placeholder="Enter name of product" name="naam"</td>
 </tr>
 
 <tr>
@@ -65,10 +106,10 @@ while($row=$result->fetch(PDO::FETCH_OBJ)):
 ?>
 <option value=<?php echo $row->id ?>>
 <?php 
-echo$row->name;//name =store[name]
+
+echo$row->title;//name =store[name]
 
 ?>
-
 </option>
 <?php
 endwhile;
@@ -80,23 +121,21 @@ endwhile;
 
 <tr>
 <td>Price:</td>
-<td><input type="number" name="prce"</td>
+<td><input type="number" name="prce" placeholder="Price"/></td>
 </tr>
 
 <tr>
-<td colspan="5" align="center"><input type="submit"  name ="submit" />
+<td colspan="5" align="center"><input type="submit" class="btn btn-primary"  name ="submit" />
 </td>
 </tr>
 <br />
-<tr><br />
-<td><a href="home.php">Home</td>
 
-</tr>
 
 
 </table>
+</div>
 </form>
-</div></div>
+</div>
 </body>
 </html>
 <?php
@@ -106,6 +145,7 @@ if(isset($_POST['submit']))
 	$item_price=$_POST['prce'];
 	$store_id=$_POST['store'];
 	$len=strlen($item_price);
+	$value=100;
 			
 	try
 	{
@@ -124,7 +164,11 @@ if(isset($_POST['submit']))
 		echo "<script>alert('Price must be fill')</script>";
 		exit();}
 	
-	
+	if($item_price < $value)
+	{
+		echo "<script>alert('Minimum order Rs 100')</script>";
+		exit();
+	}
 	
 	if($db->item($item_db))
 	{

@@ -29,7 +29,7 @@ color:#000;
 #color
 {
 
-color:#069;
+color:#F00;
 }
 .img
 {
@@ -39,7 +39,7 @@ color:#069;
 .button {
     background-color: #06F;
     border: none;
-    color: #000;
+    color: #fff;
  margin-top:250px;
  margin-left:600px;
     padding: 15px 32px;
@@ -54,13 +54,15 @@ color:#069;
     width:1375px;
     height:700px;
 	background-repeat:no-repeat;
-	background-image:url(grocery.jpg);
+	background-image:url(home.jpg);
     background-size: 100%;
 }
 h1
 {
-	color:#FFF;
+	color:#000;
+	font-family:"Times New Roman", Times, serif;
 	margin-left:390px;
+	margin-bottom:10px;
 	font-size:96px;
 }
 td
@@ -70,31 +72,64 @@ td
 	
 	table
 	{
-		margin-right:100px;
+		padding-right:100px;
+		padding-bottom:100px;
+		}
+		
+		td,th
+		{
+			border: 1px solid #dddddd;
+    text-align: left;
+			font-family:"Times New Roman", Times, serif;
+
+    padding: 8px;
 		}
 		.head
 		{
 			color:#FFF;
 			font-size:24px;
+			
+			}
+			.navbar
+			{
+				background-color:transparent;
+				border-color:transparent;
+			}
+			.icon
+			{
+				font-size:2.1em;
+				color:#FFF;
 			}
 </style>
 </head>
 
 <body>
+<nav class="navbar navbar-inverse navbar">
+<div class="container-fluid">
+<ul class="nav navbar-nav">
+<li><a href="home.php"><span class="glyphicon glyphicon-home icon"</span></a></li>
+
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="store_list.php"><span class="btn btn-primary">Show store</a></span></li>
+</ul>
+</div>
+</nav>
 
 <div class="image_container img-responsive">
-<div class="container-fluid">
-<div class>
+
+
+
 <h1>Grocery store</h1>
-</div>
-<div class="row">
+
 <div class="col-md-12">    	
-<a href="store.php" class="button">Add Store</a>
+<a href="store.php" class="button btn btn-primary">Add Store</a>
 </div>
-</div>
-<table align="right" >
+<div>
+<table align="left" >
 <tr>
-<td class="head">Trending store</td>
+<td class="head"><strong>Trending store</strong></td>
+<td>Orders(Rs)</td>
 </tr>
 
 
@@ -113,7 +148,9 @@ endforeach;
 </table>
 </div>
 </div>
-
+</div>
+</div>
+</div>
 
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
