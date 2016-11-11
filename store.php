@@ -1,4 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+include 'dbconnect.php';
+$db = new db();
+$qry="select * from store";
+$con=$db->insert($qry);
+$fetch=$con->fetchAll();
+?>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -51,12 +59,15 @@ h3 {
 <body>
 <nav class="navbar navbar-inverse navbar">
 <div class="container-fluid">
-<ul class="nav navbar-nav">
-<li><a href="home.php"><span class="glyphicon glyphicon-home icon"></span></a></li>
-</ul>
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#"style="font-size:35px ">STORE</a>
+  </div>
 <ul class="nav navbar-nav navbar-right">
+  <li><a href="home.php"><span class="btn btn-primary">Home</span></a></li>
+<?php if(count($fetch) > 0) {?>
+  <li><a href="item.php"><span class="btn btn-primary">Add item</span> </a> </li>
 <li><a href="store_list.php"><span class="btn btn-primary">Show List</a></span></li>
-
+<?php }?>
 </ul>
 </div>
 </nav>
@@ -68,11 +79,11 @@ h3 {
 <table align="center" class="table" >
   <tr>
     <td>Name:</td>
-    <td><input type="text" name="nme" placeholder="Enter name"</td>
+    <td><input type="text" name="nme"  placeholder="Enter name"</td>
   </tr>
   <tr>
     <td>Address:</td>
-    <td><input type="text" name="addr" placeholder="Address"</td>
+    <td><input type="text" name="addr"  placeholder="Address"</td>
   </tr>
   <tr>
   <td>Landmark:</td>
@@ -81,6 +92,7 @@ h3 {
   <tr>
     <td>pin code:</td>
     <td><input type="number" name="pin" placeholder="Pin code"</td>
+    <td class="hide"><input type="hidden" name="redirectUrl" value="<?php if(isset($_GET['redirect'])){ echo $_GET['redirect']; }?>"></td>
   </tr>
   <tr>
     <td align="center" colspan="5" ><input class="btn btn-primary" type="submit" name="submit" align="center" /></td>
@@ -97,50 +109,57 @@ h3 {
 </html>
 
 <?php
-if(isset($_POST['submit']))
-{
-	$store_name=$_POST['nme'];
-	$store_addr=$_POST['addr'];
-	$store_pin=$_POST['pin'];
-	$store_landmark=$_POST['landmark'];
-	$len=strlen($store_pin);
-	
-	if($store_name=="" || $store_addr==""|| $store_pin=="" || $store_landmark=="")
-	{
-		echo "<script>alert('All entries must be fill')</script>";	
-		exit();
-	}
-	if($len != 6)
-	   {
-		echo "<script>alert('Pin code should be of 6 digits')</script>";
-		exit();
-		}
-	
-   try
-  {
-	  include 'dbconnect.php';
-	  $db=new db();
-	  
-	  $duplicate="select name , pin_code, address from store where name = '$store_name' and pin_code='$store_pin' and address='$store_addr'";
-	  $duplicateCount =$db->stre($duplicate);
-	  $number_of_rows=$duplicateCount->fetchAll();
-	  if(count($number_of_rows) > 0)
-	  {
-		  echo "<script>alert('Store name already exists')</script>";
-	  }
-	  else
-	  {
-		$sql="insert into store(name,address,landmark,pin_code) values ('$store_name','$store_addr','$store_landmark','$store_pin')";
-	  $db->stre($sql);
-	  echo "<script>alert('store added')</script>";  
-	  header("location:store_list.php");
-	  }  
-	
-}
-catch(PDOException $e)
-{
-echo $e->getMessage();
-}
+
+if(isset($_POST['submit'])) {
+    $store_name = $_POST['nme'];
+    $store_addr = $_POST['addr'];
+    $store_pin = $_POST['pin'];
+    $store_landmark = $_POST['landmark'];
+    $len = strlen($store_pin);
+
+    if ($store_name == "" || $store_addr == "" || $store_pin == "" || $store_landmark == "") {
+      echo "<script>alert('All entries must be fill')</script>";
+      if(isset($_POST['redirectUrl']))
+      {
+        echo "<script>alert('Pin code should be of 6 digits')</script>";
+        echo "<script>window.location.href='store.php?redirect=addItem'</script>";
+      }
+      exit();
+    }
+    if ($len != 6) {
+      if(isset($_POST['redirectUrl']))
+      {
+        echo "<script>alert('Pin code should be of 6 digits')</script>";
+        echo "<script>window.location.href='store.php?redirect=addItem'</script>";
+      }
+
+      exit();
+    }
+
+    try {
+
+
+      $duplicate = "select name , pin_code, address from store where name = '$store_name' and pin_code='$store_pin' and address='$store_addr'";
+      $duplicateCount = $db->insert($duplicate);
+      $number_of_rows = $duplicateCount->fetchAll();
+      if (count($number_of_rows) > 0) {
+        echo "<script>alert('Store name already exists')</script>";
+      } else {
+        $sql = "insert into store(name,address,landmark,pin_code) values ('$store_name','$store_addr','$store_landmark','$store_pin')";
+        $db->insert($sql);
+        echo "<script>alert('store added')</script>";
+
+        if ($_POST['redirectUrl']) {
+          header('location:item.php');
+        } else {
+          header("location:store_list.php");
+        }
+      }
+
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+    }
+
 
 }
 ?>

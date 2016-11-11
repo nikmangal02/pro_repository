@@ -1,0 +1,83 @@
+#header
+{background-color:#06F;
+    color:#000;  }
+#color
+{  color:#F00;  }
+.img
+{  height:700px;
+    width:1350px;  }
+.button {
+    background-color: #06F;
+    border: none;
+    color: #fff;
+    margin-top:250px;
+    margin-left:600px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;  }
+.image_container
+{  width:1375px;
+    height:700px;
+    background-repeat:no-repeat;
+    background-image:url(home.jpg);
+    background-size: 100%;  }
+h1
+{  color:#000;
+    font-family:"Times New Roman", Times, serif;
+    margin-left:390px;
+    margin-bottom:10px;
+    font-size:96px;  }
+.list_product
+{
+    font-size: 40px;
+}
+
+
+.tab
+{  margin-right:100px;
+    margin-bottom:100px;  }
+
+
+.head
+{
+    color:#000000;
+    font-size: 15px;
+    width: 50%;
+
+}
+.navbar
+{
+    background-color:transparent;
+    border-color:transparent;
+    margin-bottom:0;
+}
+.wrapper-home
+{
+    margin-top: 50px;
+}
+.lst
+{  width: 400px;
+    align:right;  }
+.set_product_list{
+   margin-bottom: 120px; }
+
+.total
+{
+    font-size: 50px;
+    font-family: "Times New Roman", Times, serif;
+    color: #080808;
+}
+.set_total
+{
+padding-left:200px;
+padding-top: 500px;
+}
+.set_trending
+{
+    position: relative;
+    margin-top: 100px;
+    padding-right: 100px;
+}

@@ -2,10 +2,15 @@
 <?php
 include 'dbconnect.php';
 $db=new db();
-$ft="select id,concat(name,',',landmark) as title from store";
-$result=$db->item($ft);
+$ft="select id, concat(name,',',landmark) as title from store";
+$result=$db->insert($ft);
+$result = $result->fetchAll(PDO::FETCH_OBJ);
+$con=count($result);
 
-
+$itm="select * from item";
+$item_con=$db->insert($itm);
+$fetch=$item_con->fetchAll();
+//echo $con;
 ?>
 
 
@@ -19,100 +24,68 @@ $result=$db->item($ft);
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<title>Add item</title>
-<style>
-.img
-{
-	width:1200px;
-	height:650px;
-}
+<link type="text/css" href="item.css" rel="stylesheet">
+	<title>Add item</title>
 
-.image_container
-{
-	
-	background-repeat:no-repeat;
-	width:1375px;
-    height:700px;
-	background-size:100%;
-	
-	}
-	table
-	{
-		margin-right:100px;
-		border-collapse:collapse;
-		border-color:#000;
-		font-family:Arial, Helvetica, sans-serif;
-		}
-		
-		td
-		{
-			
-    
-    padding: 8px;
-	font-weight:bold;
-	font-size:16px;
-	font-family:Arial, Helvetica, sans-serif;
-		}
-	.icon
-	{
-	font-size:2.2em;	
-	color:#FFF;
-	}
-	.navbar
-	{
-		border-color:transparent;
-		background-color:transparent;
-	}
-	h3
-	{
-		padding-left:600px;
-		font-family:"Times New Roman", Times, serif;
-		font-size:40px;
-	}
+	<style>
+
 </style>
 </head>
 
 <body>
 <nav class="navbar navbar-inverse navbar">
 <div class="container-fluid">
-<ul class="nav navbar-nav">
-<li><a href="home.php"><span class="glyphicon glyphicon-home icon"</span></a></li>
-</ul>
-<ul class="nav navbar-nav navbar-right">
-<li><a href="list.php"><span class="btn btn-primary">Show item</a></span></li>
-</ul>
+	<div class="navbar-header">
+		<a class="navbar-brand" href="#" style="font-size:35px ">STORE</a>
+	</div>
+	<ul class="nav navbar-nav navbar-right">
+		<li><a href="home.php"><span class="btn btn-primary" >Home</a></span> </li>
+		<?php if(count($fetch) > 0){?>
+		<li><a href="list.php"><span class="btn btn-primary">Show items</span> </a> </li>
+
+		<li><a href="store.php"><span class="btn btn-primary">Add store</span></a> </li>
+		<?php } ?>
+	</ul>
 </div>
 </nav>
 
-<div>
 
+<?php
+
+if(count($result)==0){
+?>
+
+		<div class="alert alert-danger text-center"><b>OOPS!!!</b> No store is available to add items. To add items <a href="store.php?redirect=addItem" ><b>Add Store</b></a> first. </div>
+
+
+	<?php } else {?>
 <h3><strong>--Add Item--</strong></h3>
 <div class="col-md-8 col-xs-offset-2">
 <form action="item.php" method="post">
 <table class="table">
 <tr>
 <td>Name of product:</td>
-<td><input type="text" placeholder="Enter name of product" name="naam"</td>
+<td><input   type="text" placeholder="Enter name of product" name="naam"></td>
 </tr>
 
 <tr>
 <td>Store</td>
-<td>
+<td >
 
 
 <select name="store">
+	<option value="-1"> -- Select store -- </option>
 <?php
-while($row=$result->fetch(PDO::FETCH_OBJ)):
+foreach ($result as $row) :
 ?>
-<option value=<?php echo $row->id ?>>
-<?php 
+	<option value= <?php echo $row->id ?>>
+			<?php
+			echo $row->title;//name =store[name]
+			?>
+			</option>
+		<?php
 
-echo$row->title;//name =store[name]
-
-?>
-</option>
-<?php
-endwhile;
+		endforeach;
 
 ?>
 </select>
@@ -128,65 +101,70 @@ endwhile;
 <td colspan="5" align="center"><input type="submit" class="btn btn-primary"  name ="submit" />
 </td>
 </tr>
-<br />
-
-
 
 </table>
-</div>
+
 </form>
 </div>
+<?php } ?>
+
 </body>
 </html>
 <?php
-if(isset($_POST['submit']))
-{
-	$item_name=$_POST['naam'];
-	$item_price=$_POST['prce'];
-	$store_id=$_POST['store'];
-	$len=strlen($item_price);
-	$value=100;
-			
-	try
-	{
+if(isset($_POST['submit'])) {
+	$item_name = $_POST['naam'];
+	$item_price = $_POST['prce'];
+	$store_id = $_POST['store'];
+	$len = strlen($item_price);
+	$value = 100;
+	//$srr=array();
+	//$srr=array('0','1','2','3','4','5','6','7','8','9');
+	try {
 		//$tem_db=new PDO("mysql:host=$hostname;dbname=cart", $username, $password);
-     //$item_db="insert into item (name,price,store_id) values ('".$_POST["naam"]."','".$_POST["prce"]."','".$_POST["store"]."')";//store_id take input from row->id query
-	$item_db="insert into item (name,price,store_id) values('$item_name','$item_price','$store_id')";
-	
-	if($item_name=="")
-	{
-		echo "<script>alert('Name must be fill')</script>";
-		exit();
+		//$item_db="insert into item (name,price,store_id) values ('".$_POST["naam"]."','".$_POST["prce"]."','".$_POST["store"]."')";//store_id take input from row->id query
+		$item_db = "insert into item (name,price,store_id) values('$item_name','$item_price','$store_id')";
+
+		if ($item_name == "") {
+			echo "<script>alert('Name must be fill')</script>";
+			exit();
 		}
-		
-		if($item_price=="")
-	{
-		echo "<script>alert('Price must be fill')</script>";
-		exit();}
-	
-	if($item_price < $value)
-	{
-		echo "<script>alert('Minimum order Rs 100')</script>";
-		exit();
-	}
-	
-	if($db->item($item_db))
-	{
-		echo "<script>alert('item added')</script>";
-		//echo "<script> return confirm('are u sure','yes','no')</script>";
-        
-        header("location:list.php");
-	}
-    else
-    {
-    echo "<script>alert('item is not added')</script>";
-    }
-	}
-		catch(PDOException $e)
+//			if ( ctype_alnum($item_name)) {
+//				echo "<script>alert('Invalid product name')</script>";
+//
+//				exit();
+//			}
+		if(is_numeric($item_name))
+		{
+			echo "<script>alert('invalid')</script>";
+		}
+
+
+			if ($item_price == "") {
+				echo "<script>alert('Price must be fill')</script>";
+				exit();
+			}
+
+			if ($item_price < $value) {
+				echo "<script>alert('Minimum order Rs 100')</script>";
+				exit();
+			}
+
+			if ($db->insert($item_db)) {
+				echo "<script>alert('item added')</script>";
+				//echo "<script> return confirm('are u sure','yes','no')</script>";
+
+				header("location:list.php");
+			} else {
+				echo "<script>alert('item is not added')</script>";
+			}
+		}
+
+	catch
+		(PDOException $e)
 	{
 		echo $e->getMessage();
 	}
-	
 
 }
+
 ?>

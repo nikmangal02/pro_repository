@@ -3,7 +3,7 @@
 include 'dbconnect.php';
 $db=new db();
 $sql="select * from store";
-$results=$db->store_list($sql);
+$results=$db->insert($sql);
 
 ?>
 
@@ -30,20 +30,19 @@ $results=$db->store_list($sql);
 <body>
 <nav class="navbar navbar-inverse navbar">
 <div class="container-fluid">
-<ul class="nav navbar-nav">
-<li><a href="home.php"><span class="glyphicon glyphicon-home icon"></span></a></li>
-
-</ul>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#"style="font-size:35px ">STORE</a>
+    </div>
 <ul class="nav navbar-nav navbar-right">
-<li><a href="item.php"><span class="btn btn-primary">Add Item</a></span></li>
+<li><a href="item.php"><span class="btn btn-primary">Add item</a></span></li>
 
-<li><a href="store.php"><span class="btn btn-primary">Add Store</a></span></li>
+<li><a href="store.php"><span class="btn btn-primary">Add store</a></span></li>
 </ul>
 </div>
 </nav>
 <form action="store_list.php" method="post">
 <div class="col-md-8 col-xs-offset-2">
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
 <tr>
 <td><strong>Store Name<strong></td>
 <td><strong>Store Addr<strong></td>

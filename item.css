@@ -1,0 +1,33 @@
+
+table
+{
+    margin-right:100px;
+    border-collapse:collapse;
+    border-color:#000;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+td
+{
+
+
+    padding: 8px;
+    font-weight:bold;
+    font-size:16px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.navbar
+{
+    border-color:transparent;
+    background-color:transparent;
+}
+h3
+{
+    padding-left:600px;
+    font-family:"Times New Roman", Times, serif;
+    font-size:40px;
+}
+.str{
+    margin-right: 100px;
+}
